@@ -28,18 +28,18 @@ class RetrieveQuestionsTest extends TestCase
                     [
                         'data' => [
                             'type' => 'questions',
-                            'question_id' => $questions->first()->id,
+                            'question_id' => $questions->last()->id,
                             'attributes' => [
-                                'title' => $questions->first()->title,
+                                'title' => $questions->last()->title,
                             ]
                         ]
                     ],
                     [
                         'data' => [
                             'type' => 'questions',
-                            'question_id' => $questions->last()->id,
+                            'question_id' => $questions->first()->id,
                             'attributes' => [
-                                'title' => $questions->last()->title,
+                                'title' => $questions->first()->title,
                             ]
                         ]
                     ]
@@ -49,4 +49,22 @@ class RetrieveQuestionsTest extends TestCase
                 ]
             ]);
     }
+
+    /** @test */
+    // public function a_user_can_retrieve_their_posts()
+    // {
+    //     $this->actingAs($user = User::factory()->create(), 'api');
+    //     $questions = Question::factory()->create();
+
+    //     $response = $this->get('/api/questions');
+
+    //     $response->assertStatus(200)
+    //         ->assertExactJson([
+    //             'data' => [],
+    //             'links' => [
+    //                 'self' => url('/questions'),
+    //             ]
+    //         ]);
+
+    // }
 }
