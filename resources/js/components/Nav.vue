@@ -3,8 +3,8 @@
 
     <div class="w-1/3">
 
-      <div class="flex">
-        <router-link to="/">
+      <div class="flex items-center">
+        <router-link to="/" class="font-bold">
           Laravue QA
         </router-link>
 
@@ -40,7 +40,7 @@
 
     <div class="w-1/3 flex justify-end">
       <button
-        class="bg-gray-200 h-8 ml-2 px-4 py-1 rounded-full">
+        class="bg-gray-200 h-8 ml-2 px-4 py-1 rounded-full text-sm font-bold">
         Ask A Question
       </button>
 

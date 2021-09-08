@@ -6,10 +6,8 @@
     <div class="flex overflow-y-hidden flex-1">
         <Sidebar />
 
-      <div class="overflow-x-hidden w-3/4">
+      <div class="overflow-x-hidden w-4/5">
         <router-view></router-view>
-
-        <p v-for="i in 100">jsakjhnckjnSDFVADV</p>
       </div>
     </div>
 

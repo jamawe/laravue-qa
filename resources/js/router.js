@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Start from './views/Start.vue';
-
+import QuestionFeed from './views/QuestionFeed.vue'
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -9,7 +8,7 @@ export default new VueRouter({
 
   routes: [
     {
-      path: '/', name: 'home', component: Start,
+      path: '/', name: 'home', component: QuestionFeed,
     },
   ]
 });
