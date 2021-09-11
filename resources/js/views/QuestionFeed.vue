@@ -1,18 +1,25 @@
 <template>
   <div class="flex flex-col items-center py-4">
 
-    <NewQuestion />
-     This is the QFeed
+    <QuestionCreate />
+
+    This is the QFeed
+
+    <QuestionIndex />
+
   </div>
 </template>
 
 <script>
-import NewQuestion from '../components/NewQuestion.vue';
+import QuestionCreate from '../components/QuestionCreate.vue';
+import QuestionIndex from '../components/QuestionIndex.vue';
+
 export default {
   name: 'QuestionFeed',
 
   components: {
-    NewQuestion,
+    QuestionCreate,
+    QuestionIndex
   }
 }
 </script>
