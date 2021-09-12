@@ -5,7 +5,8 @@
 
     This is the QFeed
 
-    <QuestionIndex />
+    <QuestionIndex 
+      v-for="question in questions.data" :key="question.data.question_id" :question="question" />
 
   </div>
 </template>
@@ -20,6 +21,22 @@ export default {
   components: {
     QuestionCreate,
     QuestionIndex
+  },
+
+  data() {
+    return {
+      questions: null,
+    }
+  },
+
+  mounted() {
+    axios.get('/api/questions')
+      .then(res => {
+        this.questions = res.data; 
+      })
+      .catch(err => {
+        console.log('Unable to fetch questions');
+      });
   }
 }
 </script>

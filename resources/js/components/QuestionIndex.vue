@@ -7,7 +7,9 @@
       </div>
 
       <div class="flex flex-col w-5/6 mx-2 py-4">
-        <div class="flex justify-start text-blue-700 hover:text-blue-800 text-xl">This is an awesome question title</div>
+        <div class="flex justify-start text-blue-700 hover:text-blue-800 text-xl">
+          {{ question.data.attributes.title }}
+        </div>
 
         <div class="flex justify-end m-2">
           <!-- <div class="flex justify-between items-center">
@@ -15,7 +17,7 @@
             <button class="bg-gray-200 text-xs">vuejs</button>
           </div> -->
           <div class="text-xs">
-            <p>asked by Panda 23 hours ago</p>
+            <p>asked by {{ question.data.attributes.asked_by.data.attributes.name }} 23 hours ago</p>
           </div>
         </div>
 
@@ -29,6 +31,9 @@
 export default {
   name: 'QuestionIndex',
 
+  props: [
+    'question',
+  ],
 
 }
 </script>

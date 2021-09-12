@@ -2019,8 +2019,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'QuestionIndex'
+  name: 'QuestionIndex',
+  props: ['question']
 });
 
 /***/ }),
@@ -2075,6 +2078,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2082,6 +2086,20 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     QuestionCreate: _components_QuestionCreate_vue__WEBPACK_IMPORTED_MODULE_0__.default,
     QuestionIndex: _components_QuestionIndex_vue__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  data: function data() {
+    return {
+      questions: null
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/questions').then(function (res) {
+      _this.questions = res.data;
+    })["catch"](function (err) {
+      console.log('Unable to fetch questions');
+    });
   }
 });
 
@@ -38354,7 +38372,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "bg-white rounded shadow w-2/3 mt-6 overflow-hidden" },
+    [
+      _c("div", { staticClass: "flex justify-around items-start" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex flex-col w-5/6 mx-2 py-4" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "flex justify-start text-blue-700 hover:text-blue-800 text-xl"
+            },
+            [
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.question.data.attributes.title) +
+                  "\n      "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex justify-end m-2" }, [
+            _c("div", { staticClass: "text-xs" }, [
+              _c("p", [
+                _vm._v(
+                  "asked by " +
+                    _vm._s(
+                      _vm.question.data.attributes.asked_by.data.attributes.name
+                    ) +
+                    " 23 hours ago"
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -38363,39 +38420,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "bg-white rounded shadow w-2/3 mt-6 overflow-hidden" },
+      { staticClass: "flex flex-col w-1/6 mx-2 py-4 items-center text-center" },
       [
-        _c("div", { staticClass: "flex justify-around items-start" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "flex flex-col w-1/6 mx-2 py-4 items-center text-center"
-            },
-            [
-              _c("p", { staticClass: "text-xl" }, [_vm._v("0")]),
-              _vm._v(" "),
-              _c("p", { staticClass: "text-xs" }, [_vm._v("answers")])
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex flex-col w-5/6 mx-2 py-4" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "flex justify-start text-blue-700 hover:text-blue-800 text-xl"
-              },
-              [_vm._v("This is an awesome question title")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex justify-end m-2" }, [
-              _c("div", { staticClass: "text-xs" }, [
-                _c("p", [_vm._v("asked by Panda 23 hours ago")])
-              ])
-            ])
-          ])
-        ])
+        _c("p", { staticClass: "text-xl" }, [_vm._v("0")]),
+        _vm._v(" "),
+        _c("p", { staticClass: "text-xs" }, [_vm._v("answers")])
       ]
     )
   }
@@ -38474,9 +38503,14 @@ var render = function() {
     [
       _c("QuestionCreate"),
       _vm._v("\n\n  This is the QFeed\n\n  "),
-      _c("QuestionIndex")
+      _vm._l(_vm.questions.data, function(question) {
+        return _c("QuestionIndex", {
+          key: question.data.question_id,
+          attrs: { question: question }
+        })
+      })
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
