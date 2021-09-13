@@ -2106,6 +2106,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'QuestionFeed',
@@ -2114,7 +2117,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      questions: null
+      questions: [],
+      loading: true
     };
   },
   mounted: function mounted() {
@@ -2122,6 +2126,7 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('/api/questions').then(function (res) {
       _this.questions = res.data;
+      _this.loading = false;
     })["catch"](function (err) {
       console.log('Unable to fetch questions');
     });
@@ -38638,13 +38643,14 @@ var render = function() {
     "div",
     { staticClass: "flex flex-col items-center py-4" },
     [
-      _vm._v("\n\n  This is the QFeed\n\n  "),
-      _vm._l(_vm.questions.data, function(question) {
-        return _c("QuestionIndex", {
-          key: question.data.question_id,
-          attrs: { question: question }
-        })
-      })
+      _vm.loading
+        ? _c("p", [_vm._v("Loading questions...")])
+        : _vm._l(_vm.questions.data, function(question) {
+            return _c("QuestionIndex", {
+              key: question.data.question_id,
+              attrs: { question: question }
+            })
+          })
     ],
     2
   )

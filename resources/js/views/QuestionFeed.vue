@@ -1,10 +1,13 @@
 <template>
   <div class="flex flex-col items-center py-4">
 
-    This is the QFeed
+    <p v-if="loading">Loading questions...</p>
 
     <QuestionIndex 
-      v-for="question in questions.data" :key="question.data.question_id" :question="question" />
+      v-else
+      v-for="question in questions.data"
+      :key="question.data.question_id"
+      :question="question" />
 
   </div>
 </template>
@@ -21,14 +24,16 @@ export default {
 
   data() {
     return {
-      questions: null,
+      questions: [],
+      loading: true,
     }
   },
 
   mounted() {
     axios.get('/api/questions')
       .then(res => {
-        this.questions = res.data; 
+        this.questions = res.data;
+        this.loading = false;
       })
       .catch(err => {
         console.log('Unable to fetch questions');

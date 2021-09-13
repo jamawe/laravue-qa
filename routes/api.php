@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,11 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function () {
     // Any route inside this callback will be protected by the api
 
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    
-    Route::get('/questions', [QuestionController::class, 'index']);
-    Route::post('/questions', [QuestionController::class, 'store']);
+    Route::apiResources([
+        'questions' => QuestionController::class,
+        'users' => UserController::class,
+    ]);
 
 });
