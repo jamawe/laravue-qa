@@ -3,7 +3,7 @@
 
     <p v-if="loading">Loading questions...</p>
 
-    <QuestionIndex 
+    <Question 
       v-else
       v-for="question in questions.data"
       :key="question.data.question_id"
@@ -13,13 +13,13 @@
 </template>
 
 <script>
-import QuestionIndex from '../components/QuestionIndex.vue';
+import Question from '../../components/Question.vue'
 
 export default {
-  name: 'QuestionFeed',
+  name: 'Index',
 
   components: {
-    QuestionIndex
+    Question
   },
 
   data() {

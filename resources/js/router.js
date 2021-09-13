@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import QuestionFeed from './views/QuestionFeed.vue'
-import QuestionCreate from './views/QuestionCreate.vue'
+import QuestionsIndex from './views/Questions/Index.vue'
+import QuestionsCreate from './views/Questions/Create.vue'
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -9,10 +9,10 @@ export default new VueRouter({
 
   routes: [
     {
-      path: '/', name: 'home', component: QuestionFeed,
+      path: '/', name: 'home', component: QuestionsIndex,
     },
     {
-      path: '/questions/create', name: 'question.create', component: QuestionCreate,
+      path: '/questions/create', name: 'questions.create', component: QuestionsCreate,
     },
     // {
     //   path: '/questions/{id}', name: 'question.show', component: QuestionShow,
