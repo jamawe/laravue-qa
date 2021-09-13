@@ -22,6 +22,9 @@ class Question extends JsonResource
                 'attributes' => [
                     'asked_by' => new UserResource($this->user),
                     'title' => $this->title,
+                    'description' => $this->description,
+                    'posted_at' => $this->created_at->diffForHumans(),
+                    'updated_at' => $this->updated_at->diffForHumans(),
                 ]
             ],
             'links' => [

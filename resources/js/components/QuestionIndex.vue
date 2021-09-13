@@ -17,7 +17,7 @@
             <button class="bg-gray-200 text-xs">vuejs</button>
           </div> -->
           <div class="text-xs">
-            <p>asked by {{ question.data.attributes.asked_by.data.attributes.name }} 23 hours ago</p>
+            <p>asked by {{ question.data.attributes.asked_by.data.attributes.name }} {{ question.data.attributes.posted_at }}</p>
           </div>
         </div>
 

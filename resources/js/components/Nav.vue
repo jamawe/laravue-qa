@@ -39,10 +39,12 @@
     </div>
 
     <div class="w-1/3 flex justify-end">
-      <button
-        class="bg-gray-200 h-8 ml-2 px-4 py-1 rounded-full text-sm font-bold">
-        Ask A Question
-      </button>
+      <router-link to="/questions/create">
+        <button
+          class="bg-gray-200 h-8 ml-2 px-4 py-1 rounded-full text-sm font-bold">
+          Ask A Question
+        </button>
+      </router-link>
 
 
     </div>

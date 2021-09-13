@@ -18,6 +18,7 @@ class QuestionController extends Controller
     {
         $data = request()->validate([
             'data.attributes.title' => '',
+            'data.attributes.description' => '',
         ]);
 
         $question = request()->user()->questions()->create($data['data']['attributes']);

@@ -31,6 +31,9 @@ class RetrieveQuestionsTest extends TestCase
                             'question_id' => $questions->last()->id,
                             'attributes' => [
                                 'title' => $questions->last()->title,
+                                'description' => $questions->last()->description,
+                                'posted_at' => $questions->last()->created_at->diffForHumans(),
+                                'updated_at' => $questions->last()->updated_at->diffForHumans(),
                             ]
                         ]
                     ],
@@ -40,6 +43,9 @@ class RetrieveQuestionsTest extends TestCase
                             'question_id' => $questions->first()->id,
                             'attributes' => [
                                 'title' => $questions->first()->title,
+                                'description' => $questions->first()->description,
+                                'posted_at' => $questions->first()->created_at->diffForHumans(),
+                                'updated_at' => $questions->first()->updated_at->diffForHumans(),
                             ]
                         ]
                     ]
