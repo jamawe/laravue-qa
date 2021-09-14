@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserQuestionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,9 @@ Route::middleware('auth:api')->group(function () {
     // Any route inside this callback will be protected by the api
 
     Route::apiResources([
-        'questions' => QuestionController::class,
-        'users' => UserController::class,
+        '/questions' => QuestionController::class,
+        '/users' => UserController::class,
+        '/users/{user}/questions' => UserQuestionController::class,
     ]);
 
 });

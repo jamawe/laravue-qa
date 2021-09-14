@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import QuestionsIndex from './views/Questions/Index.vue'
-import QuestionsCreate from './views/Questions/Create.vue'
+import QuestionIndex from './views/Questions/Index.vue';
+import QuestionCreate from './views/Questions/Create.vue';
+import UserShow from './views/Users/Show.vue';
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -9,11 +10,14 @@ export default new VueRouter({
 
   routes: [
     {
-      path: '/', name: 'home', component: QuestionsIndex,
+      path: '/', name: 'home', component: QuestionIndex,
     },
     {
-      path: '/questions/create', name: 'questions.create', component: QuestionsCreate,
+      path: '/questions/create', name: 'question.create', component: QuestionCreate,
     },
+    {
+      path: '/users/:userId', name: 'user.show', component: UserShow,
+    }
     // {
     //   path: '/questions/{id}', name: 'question.show', component: QuestionShow,
     // },

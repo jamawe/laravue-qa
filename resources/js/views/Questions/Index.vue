@@ -33,10 +33,12 @@ export default {
     axios.get('/api/questions')
       .then(res => {
         this.questions = res.data;
-        this.loading = false;
       })
       .catch(err => {
         console.log('Unable to fetch questions');
+      })
+      .finally(() => {
+        this.loading = false;
       });
   }
 }
