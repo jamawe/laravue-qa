@@ -2121,6 +2121,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _components_Question_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Question.vue */ "./resources/js/components/Question.vue");
 //
 //
 //
@@ -2133,12 +2134,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Show',
+  components: {
+    Question: _components_Question_vue__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
       user: null,
-      loading: true
+      userLoading: true,
+      questions: [],
+      questionLoading: true
     };
   },
   mounted: function mounted() {
@@ -2149,7 +2179,14 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (err) {
       console.log('Unable to fetch user from server.');
     })["finally"](function () {
-      _this.loading = false;
+      _this.userLoading = false;
+    });
+    axios.get('/api/users/' + this.$route.params.userId + '/questions').then(function (res) {
+      _this.questions = res.data;
+    })["catch"](function (err) {
+      console.log('Unable to fetch questions.');
+    })["finally"](function () {
+      _this.questionLoading = false;
     });
   }
 });
@@ -38677,40 +38714,66 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
+  return _c("div", [
+    _c(
       "div",
       {
         staticClass:
-          "flex justify-start items-center w-100 h-48 p-6 overflow-hidden"
+          "flex justify-start items-center w-100 h-48 ml-12 overflow-hidden"
       },
       [
-        _c("div", { staticClass: "mr-6" }, [
-          _c("img", {
-            staticClass: "w-32 h-32 object-cover rounded-full",
-            attrs: {
-              src:
-                "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
-              alt: "Profile Image"
-            }
-          })
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c("div", [
-          _c("p", { staticClass: "text-2xl font-bold" }, [_vm._v("User name")]),
+          _c("p", { staticClass: "text-2xl font-bold" }, [
+            _vm._v(_vm._s(_vm.user.data.attributes.name))
+          ]),
           _vm._v(" "),
           _c("p", { staticClass: "text-sm" }, [
             _vm._v("Member for 5 years, 11 months")
           ])
         ])
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "flex flex-col items-center" },
+      [
+        _vm.questionLoading
+          ? _c("p", [_vm._v("Loading questions...")])
+          : _vm._l(_vm.questions.data, function(question) {
+              return _c("Question", {
+                key: question.data.question_id,
+                attrs: { question: question }
+              })
+            }),
+        _vm._v(" "),
+        !_vm.questionLoading && _vm.questions.data.length < 1
+          ? _c("p", [
+              _vm._v("\n      This user has not asked any questions yet.\n    ")
+            ])
+          : _vm._e()
+      ],
+      2
     )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mr-6" }, [
+      _c("img", {
+        staticClass: "w-32 h-32 object-cover rounded-full",
+        attrs: {
+          src:
+            "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+          alt: "Profile Image"
+        }
+      })
+    ])
   }
 ]
 render._withStripped = true
