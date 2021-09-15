@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import router from './router';
 import App from './components/App.vue';
+import store from './store';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -35,5 +36,7 @@ require('./bootstrap');
     },
 
     router,
+
+    store,
 
 });

@@ -26,7 +26,10 @@ export default {
     Sidebar
   },
 
-
+  mounted() {
+    this.$store.dispatch('fetchAuthUser');
+  },
+  
 }
 </script>
 
