@@ -1,6 +1,6 @@
 const state = {
 
-  user: null,
+  user: {},
 
   userStatus: null,
   

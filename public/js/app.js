@@ -1871,8 +1871,16 @@ __webpack_require__.r(__webpack_exports__);
     Nav: _Nav_vue__WEBPACK_IMPORTED_MODULE_0__.default,
     Sidebar: _Sidebar_vue__WEBPACK_IMPORTED_MODULE_1__.default
   },
+  created: function created() {
+    this.$store.dispatch('setPageTitle', this.$route.meta.title);
+  },
   mounted: function mounted() {
     this.$store.dispatch('fetchAuthUser');
+  },
+  watch: {
+    $route: function $route(to, from) {
+      this.$store.dispatch('setPageTitle', to.meta.title);
+    }
   }
 });
 
@@ -2329,15 +2337,24 @@ vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vue_router__WEBPACK_IMPORTED_MODULE
   routes: [{
     path: '/',
     name: 'home',
-    component: _views_Questions_Index_vue__WEBPACK_IMPORTED_MODULE_0__.default
+    component: _views_Questions_Index_vue__WEBPACK_IMPORTED_MODULE_0__.default,
+    meta: {
+      title: 'Question Feed'
+    }
   }, {
     path: '/questions/create',
     name: 'question.create',
-    component: _views_Questions_Create_vue__WEBPACK_IMPORTED_MODULE_1__.default
+    component: _views_Questions_Create_vue__WEBPACK_IMPORTED_MODULE_1__.default,
+    meta: {
+      title: 'Create A New Question'
+    }
   }, {
     path: '/users/:userId',
     name: 'user.show',
-    component: _views_Users_Show_vue__WEBPACK_IMPORTED_MODULE_2__.default
+    component: _views_Users_Show_vue__WEBPACK_IMPORTED_MODULE_2__.default,
+    meta: {
+      title: 'Profile'
+    }
   } // {
   //   path: '/questions/{id}', name: 'question.show', component: QuestionShow,
   // },
@@ -2357,18 +2374,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/user */ "./resources/js/store/modules/user.js");
+/* harmony import */ var _modules_title__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/title */ "./resources/js/store/modules/title.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__.default.use(vuex__WEBPACK_IMPORTED_MODULE_2__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_2__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuex__WEBPACK_IMPORTED_MODULE_3__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
   modules: {
-    User: _modules_user__WEBPACK_IMPORTED_MODULE_0__.default
+    User: _modules_user__WEBPACK_IMPORTED_MODULE_0__.default,
+    Title: _modules_title__WEBPACK_IMPORTED_MODULE_1__.default
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/title.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/title.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var state = {
+  title: 'Welcome'
+};
+var getters = {
+  pageTitle: function pageTitle(state) {
+    return state.title;
+  }
+};
+var actions = {
+  setPageTitle: function setPageTitle(_ref, title) {
+    var commit = _ref.commit,
+        state = _ref.state;
+    commit('setTitle', title);
+  }
+};
+var mutations = {
+  setTitle: function setTitle(state, title) {
+    state.title = title + ' | Laravue QA';
+    document.title = state.title;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
 
 /***/ }),
 
@@ -2384,7 +2445,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 var state = {
-  user: null,
+  user: {},
   userStatus: null
 };
 var getters = {
@@ -38458,23 +38519,25 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass: "px-6 h-full flex items-center",
-              attrs: { to: "/users/" + _vm.authUser.data.user_id }
-            },
-            [
-              _c("img", {
-                staticClass: "w-8 h-8 object-cover rounded-full",
-                attrs: {
-                  src:
-                    "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
-                  alt: "Profile Image"
-                }
-              })
-            ]
-          ),
+          _vm.authUser
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "px-6 h-full flex items-center",
+                  attrs: { to: "/users/" + _vm.authUser.data.user_id }
+                },
+                [
+                  _c("img", {
+                    staticClass: "w-8 h-8 object-cover rounded-full",
+                    attrs: {
+                      src:
+                        "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+                      alt: "Profile Image"
+                    }
+                  })
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "router-link",

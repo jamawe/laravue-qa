@@ -10,13 +10,22 @@ export default new VueRouter({
 
   routes: [
     {
-      path: '/', name: 'home', component: QuestionIndex,
+      path: '/',
+      name: 'home',
+      component: QuestionIndex,
+      meta: { title: 'Question Feed' },
     },
     {
-      path: '/questions/create', name: 'question.create', component: QuestionCreate,
+      path: '/questions/create',
+      name: 'question.create',
+      component: QuestionCreate,
+      meta: { title: 'Create A New Question' },
     },
     {
-      path: '/users/:userId', name: 'user.show', component: UserShow,
+      path: '/users/:userId',
+      name: 'user.show',
+      component: UserShow,
+      meta: { title: 'Profile' },
     }
     // {
     //   path: '/questions/{id}', name: 'question.show', component: QuestionShow,

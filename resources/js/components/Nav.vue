@@ -27,7 +27,7 @@
         </svg>
       </router-link>
 
-      <router-link :to="'/users/' + authUser.data.user_id" class="px-6 h-full flex items-center">
+      <router-link v-if="authUser" :to="'/users/' + authUser.data.user_id" class="px-6 h-full flex items-center">
         <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="Profile Image"  class="w-8 h-8 object-cover rounded-full">
       </router-link>
 
