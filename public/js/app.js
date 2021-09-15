@@ -2090,7 +2090,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_Question_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Question.vue */ "./resources/js/components/Question.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2105,29 +2112,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Index',
   components: {
     Question: _components_Question_vue__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  data: function data() {
-    return {
-      questions: [],
-      loading: true
-    };
-  },
   mounted: function mounted() {
-    var _this = this;
-
-    axios.get('/api/questions').then(function (res) {
-      _this.questions = res.data;
-    })["catch"](function (err) {
-      console.log('Unable to fetch questions');
-    })["finally"](function () {
-      _this.loading = false;
-    });
-  }
+    this.$store.dispatch('fetchFeedQuestions');
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({
+    questions: 'questions',
+    status: 'status'
+  }))
 });
 
 /***/ }),
@@ -2374,21 +2372,84 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/user */ "./resources/js/store/modules/user.js");
 /* harmony import */ var _modules_title__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/title */ "./resources/js/store/modules/title.js");
+/* harmony import */ var _modules_questions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/questions */ "./resources/js/store/modules/questions.js");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuex__WEBPACK_IMPORTED_MODULE_3__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vuex__WEBPACK_IMPORTED_MODULE_4__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_4__.default.Store({
   modules: {
     User: _modules_user__WEBPACK_IMPORTED_MODULE_0__.default,
-    Title: _modules_title__WEBPACK_IMPORTED_MODULE_1__.default
+    Title: _modules_title__WEBPACK_IMPORTED_MODULE_1__.default,
+    Questions: _modules_questions__WEBPACK_IMPORTED_MODULE_2__.default
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/questions.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/questions.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var state = {
+  questions: null,
+  questionStatus: null
+};
+var getters = {
+  questions: function questions(state) {
+    return state.questions;
+  },
+  status: function status(state) {
+    return {
+      questionsStatus: state.questionStatus
+    };
+  }
+};
+var actions = {
+  fetchFeedQuestions: function fetchFeedQuestions(_ref) {
+    var _this = this;
+
+    var commit = _ref.commit,
+        state = _ref.state;
+    commit('setQuestionsStatus', 'loading');
+    axios.get('/api/questions').then(function (res) {
+      commit('setQuestions', res.data);
+      commit('setQuestionsStatus', 'success');
+    })["catch"](function (err) {
+      console.log('Unable to fetch questions');
+      commit('setQuestionsStatus', 'error');
+    })["finally"](function () {
+      _this.loading = false;
+    });
+  }
+};
+var mutations = {
+  setQuestions: function setQuestions(state, questions) {
+    state.questions = questions;
+  },
+  setQuestionsStatus: function setQuestionsStatus(state, status) {
+    state.questionsStatus = status;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
 
 /***/ }),
 
@@ -38830,7 +38891,7 @@ var render = function() {
     "div",
     { staticClass: "flex flex-col items-center py-4" },
     [
-      _vm.loading
+      _vm.status.questionStatus === "loading"
         ? _c("p", [_vm._v("Loading questions...")])
         : _vm._l(_vm.questions.data, function(question) {
             return _c("Question", {

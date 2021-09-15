@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center py-4">
 
-    <p v-if="loading">Loading questions...</p>
+    <p v-if="status.questionStatus === 'loading'">Loading questions...</p>
 
     <Question 
       v-else
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Question from '../../components/Question.vue'
 
 export default {
@@ -22,25 +23,17 @@ export default {
     Question
   },
 
-  data() {
-    return {
-      questions: [],
-      loading: true,
-    }
+  mounted() {
+    this.$store.dispatch('fetchFeedQuestions');
   },
 
-  mounted() {
-    axios.get('/api/questions')
-      .then(res => {
-        this.questions = res.data;
-      })
-      .catch(err => {
-        console.log('Unable to fetch questions');
-      })
-      .finally(() => {
-        this.loading = false;
-      });
-  }
+  computed: {
+    ...mapGetters({
+      questions: 'questions',
+      status: 'status',
+    })
+  },
+
 }
 </script>
 
