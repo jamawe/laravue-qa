@@ -3,6 +3,10 @@ const state = {
   questions: null,
 
   questionStatus: null,
+
+  questionTitle: '',
+
+  // questionDescription: '',
   
 };
 
@@ -16,7 +20,15 @@ const getters = {
     return {
       questionsStatus: state.questionStatus,
     }
-  }
+  },
+
+  questionTitle: state => {
+    return state.questionTitle;
+  },
+
+  // questionDescription: state => {
+  //   return state.questionDescription;
+  // },
 
 };
 
@@ -35,11 +47,25 @@ const actions = {
         console.log('Unable to fetch questions');
         commit('setQuestionsStatus', 'error');
 
-      })
-      .finally(() => {
-        this.loading = false;
       });
   },
+
+  createQuestion({commit, state}) {
+    
+    commit('setQuestionsStatus', 'loading');
+
+    axios.post('/api/questions', { title: state.questionTitle })
+    // axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription })
+      .then(res => {
+        commit('pushQuestion', res.data);
+        commit('createTitle', '');
+        // commit('createDesciption', '');
+      })
+      .catch(err => {
+
+      });
+
+  }
 
 };
 
@@ -53,7 +79,17 @@ const mutations = {
     state.questionsStatus = status;
   },
 
+  createTitle(state, title) {
+    state.questionTitle = title;
+  },
 
+  // createDescription(state, description) {
+  //   state.questionDescription = description;
+  // },
+
+  pushQuestion(state, question) {
+    state.questions.data.unshift(question);
+  }
 };
 
 export default {

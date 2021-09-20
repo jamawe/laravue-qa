@@ -17,11 +17,11 @@ class QuestionController extends Controller
     public function store()
     {
         $data = request()->validate([
-            'data.attributes.title' => '',
-            'data.attributes.description' => '',
+            'title' => '',
+            'description' => '',
         ]);
 
-        $question = request()->user()->questions()->create($data['data']['attributes']);
+        $question = request()->user()->questions()->create($data);
 
         return new QuestionResource($question);
     }

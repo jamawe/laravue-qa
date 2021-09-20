@@ -2051,6 +2051,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2073,8 +2075,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'QuestionCreate'
+  name: 'QuestionCreate',
+  methods: {
+    createQuestion: function createQuestion() {
+      var _this = this;
+
+      this.$store.dispatch('createQuestion').then(function () {
+        _this.$router.push('/');
+      });
+    }
+  },
+  computed: {
+    questionTitle: {
+      get: function get() {
+        return this.$store.getters.questionTitle;
+      },
+      set: lodash__WEBPACK_IMPORTED_MODULE_0___default().debounce(function (questionTitle) {
+        this.$store.commit('createTitle', questionTitle);
+      }, 300)
+    } // questionDescription: {
+    //   get() {
+    //   return this.$store.getters.questionDescription;
+    //   },
+    //   set(questionDescription) {
+    //     this.$store.commit('createDescription', questionDescription);
+    //   },
+    // },
+
+  }
 });
 
 /***/ }),
@@ -2406,7 +2436,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 var state = {
   questions: null,
-  questionStatus: null
+  questionStatus: null,
+  questionTitle: '' // questionDescription: '',
+
 };
 var getters = {
   questions: function questions(state) {
@@ -2416,12 +2448,16 @@ var getters = {
     return {
       questionsStatus: state.questionStatus
     };
-  }
+  },
+  questionTitle: function questionTitle(state) {
+    return state.questionTitle;
+  } // questionDescription: state => {
+  //   return state.questionDescription;
+  // },
+
 };
 var actions = {
   fetchFeedQuestions: function fetchFeedQuestions(_ref) {
-    var _this = this;
-
     var commit = _ref.commit,
         state = _ref.state;
     commit('setQuestionsStatus', 'loading');
@@ -2431,9 +2467,19 @@ var actions = {
     })["catch"](function (err) {
       console.log('Unable to fetch questions');
       commit('setQuestionsStatus', 'error');
-    })["finally"](function () {
-      _this.loading = false;
     });
+  },
+  createQuestion: function createQuestion(_ref2) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+    commit('setQuestionsStatus', 'loading');
+    axios.post('/api/questions', {
+      title: state.questionTitle
+    }) // axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription })
+    .then(function (res) {
+      commit('pushQuestion', res.data);
+      commit('createTitle', ''); // commit('createDesciption', '');
+    })["catch"](function (err) {});
   }
 };
 var mutations = {
@@ -2442,6 +2488,15 @@ var mutations = {
   },
   setQuestionsStatus: function setQuestionsStatus(state, status) {
     state.questionsStatus = status;
+  },
+  createTitle: function createTitle(state, title) {
+    state.questionTitle = title;
+  },
+  // createDescription(state, description) {
+  //   state.questionDescription = description;
+  // },
+  pushQuestion: function pushQuestion(state, question) {
+    state.questions.data.unshift(question);
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -38805,63 +38860,82 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "flex flex-col items-center py-4" }, [
+    _c("div", { staticClass: "bg-white rounded shadow w-2/3 p-4" }, [
+      _c("h1", { staticClass: "font-bold text-2xl" }, [
+        _vm._v("Ask A Question")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "my-2" }, [
+        _c("label", { attrs: { for: "title" } }, [_vm._v("Question:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.questionTitle,
+              expression: "questionTitle"
+            }
+          ],
+          staticClass:
+            "p-2 w-full bg-gray-200 h-8 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
+          attrs: {
+            type: "text",
+            name: "title",
+            id: "title",
+            autocomplete: "off"
+          },
+          domProps: { value: _vm.questionTitle },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.questionTitle = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "bg-gray-200 h-8 px-4 py-1 rounded-full font-bold focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer",
+          on: {
+            click: function($event) {
+              return _vm.createQuestion()
+            }
+          }
+        },
+        [_vm._v("Submit Question")]
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex flex-col items-center py-4" }, [
-      _c("div", { staticClass: "bg-white rounded shadow w-2/3 p-4" }, [
-        _c("h1", { staticClass: "font-bold text-2xl" }, [
-          _vm._v("Ask A Question")
-        ]),
-        _vm._v(" "),
-        _c("form", { attrs: { action: "" } }, [
-          _c("div", { staticClass: "my-2" }, [
-            _c("label", { attrs: { for: "title" } }, [_vm._v("Question:")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass:
-                "p-2 w-full bg-gray-200 h-8 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
-              attrs: {
-                type: "text",
-                name: "title",
-                id: "title",
-                autocomplete: "off"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "my-2" }, [
-            _c("label", { attrs: { for: "description" } }, [
-              _vm._v("More Information:")
-            ]),
-            _vm._v(" "),
-            _c("textarea", {
-              staticClass:
-                "p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
-              attrs: {
-                name: "description",
-                id: "description",
-                autocomplete: "off",
-                rows: "4"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass:
-                "bg-gray-200 h-8 px-4 py-1 rounded-full font-bold focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer",
-              attrs: { type: "submit" }
-            },
-            [_vm._v("Submit Question")]
-          )
-        ])
-      ])
+    return _c("div", { staticClass: "my-2" }, [
+      _c("label", { attrs: { for: "description" } }, [
+        _vm._v("More Information:")
+      ]),
+      _vm._v(" "),
+      _c("textarea", {
+        staticClass:
+          "p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
+        attrs: {
+          name: "description",
+          id: "description",
+          autocomplete: "off",
+          rows: "4"
+        }
+      })
     ])
   }
 ]
@@ -55638,6 +55712,18 @@ var index = {
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

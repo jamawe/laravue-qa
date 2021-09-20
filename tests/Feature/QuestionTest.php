@@ -15,17 +15,11 @@ class QuestionTest extends TestCase
     /** @test */
     public function a_user_can_post_a_question()
     {
-        $this->withoutExceptionHandling();
         
         $this->actingAs($user = User::factory()->create(), 'api');
 
         $response = $this->post('/api/questions', [
-            'data' => [
-                'type' => 'questions',
-                'attributes' => [
-                    'title' => 'Testing Title'
-                ]
-            ]
+            'title' => 'Testing Title',
         ]);
 
         $question = Question::first();
@@ -58,6 +52,58 @@ class QuestionTest extends TestCase
             ]);
 
     }
+
+    // /** @test */
+    // public function a_user_can_post_a_question_with_description()
+    // {
+    //     $this->withoutExceptionHandling();
+        
+    //     $this->actingAs($user = User::factory()->create(), 'api');
+
+    //     $response = $this->post('/api/questions', [
+    //         'data' => [
+    //             'type' => 'questions',
+    //             'attributes' => [
+    //                 'title' => 'Testing Title',
+    //                 'description' => 'A very nice Description',
+    //             ]
+    //         ]
+    //     ]);
+
+    //     $question = Question::first();
+
+    //     // dd($question);
+
+    //     $this->assertCount(1, Question::all());
+
+    //     $this->assertEquals($user->id, $question->user_id);
+    //     $this->assertEquals('Testing Title', $question->title);
+    //     $this->assertEquals('A very nice Description', $question->desciption);
+
+
+    //     $response->assertStatus(201)
+    //         ->assertJson([
+    //             'data' => [
+    //                 'type' => 'questions',
+    //                 'question_id' => $question->id,
+    //                 'attributes' => [
+    //                     'asked_by' => [
+    //                         'data' => [
+    //                             'attributes' => [
+    //                                 'name' => $user->name,
+    //                             ]
+    //                         ]
+    //                     ],
+    //                     'title' => 'Testing Title',
+    //                     'description' => 'A very nice Description',
+    //                 ]
+    //             ],
+    //             'links' => [
+    //                 'self' => url('/questions/'.$question->id),
+    //             ]
+    //         ]);
+
+    // }
 
     // /**
     //  * A basic feature test example.
