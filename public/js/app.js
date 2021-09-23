@@ -2095,15 +2095,15 @@ __webpack_require__.r(__webpack_exports__);
       set: lodash__WEBPACK_IMPORTED_MODULE_0___default().debounce(function (questionTitle) {
         this.$store.commit('createTitle', questionTitle);
       }, 300)
-    } // questionDescription: {
-    //   get() {
-    //   return this.$store.getters.questionDescription;
-    //   },
-    //   set(questionDescription) {
-    //     this.$store.commit('createDescription', questionDescription);
-    //   },
-    // },
-
+    },
+    questionDescription: {
+      get: function get() {
+        return this.$store.getters.questionDescription;
+      },
+      set: lodash__WEBPACK_IMPORTED_MODULE_0___default().debounce(function (questionDescription) {
+        this.$store.commit('createDescription', questionDescription);
+      }, 300)
+    }
   }
 });
 
@@ -2437,8 +2437,8 @@ __webpack_require__.r(__webpack_exports__);
 var state = {
   questions: null,
   questionStatus: null,
-  questionTitle: '' // questionDescription: '',
-
+  questionTitle: '',
+  questionDescription: ''
 };
 var getters = {
   questions: function questions(state) {
@@ -2451,10 +2451,10 @@ var getters = {
   },
   questionTitle: function questionTitle(state) {
     return state.questionTitle;
-  } // questionDescription: state => {
-  //   return state.questionDescription;
-  // },
-
+  },
+  questionDescription: function questionDescription(state) {
+    return state.questionDescription;
+  }
 };
 var actions = {
   fetchFeedQuestions: function fetchFeedQuestions(_ref) {
@@ -2473,12 +2473,16 @@ var actions = {
     var commit = _ref2.commit,
         state = _ref2.state;
     commit('setQuestionsStatus', 'loading');
+    console.log('state.questionDescription: ', state.questionDescription); // axios.post('/api/questions', { title: state.questionTitle })
+
     axios.post('/api/questions', {
-      title: state.questionTitle
-    }) // axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription })
-    .then(function (res) {
+      title: state.questionTitle,
+      description: state.questionDescription
+    }).then(function (res) {
+      console.log(res.data);
       commit('pushQuestion', res.data);
-      commit('createTitle', ''); // commit('createDesciption', '');
+      commit('createTitle', '');
+      commit('createDescription', '');
     })["catch"](function (err) {});
   }
 };
@@ -2492,9 +2496,9 @@ var mutations = {
   createTitle: function createTitle(state, title) {
     state.questionTitle = title;
   },
-  // createDescription(state, description) {
-  //   state.questionDescription = description;
-  // },
+  createDescription: function createDescription(state, description) {
+    state.questionDescription = description;
+  },
   pushQuestion: function pushQuestion(state, question) {
     state.questions.data.unshift(question);
   }
@@ -38898,7 +38902,39 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "my-2" }, [
+        _c("label", { attrs: { for: "description" } }, [
+          _vm._v("More Information:")
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.questionDescription,
+              expression: "questionDescription"
+            }
+          ],
+          staticClass:
+            "p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
+          attrs: {
+            name: "description",
+            id: "description",
+            autocomplete: "off",
+            rows: "4"
+          },
+          domProps: { value: _vm.questionDescription },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.questionDescription = $event.target.value
+            }
+          }
+        })
+      ]),
       _vm._v(" "),
       _c(
         "button",
@@ -38916,29 +38952,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "my-2" }, [
-      _c("label", { attrs: { for: "description" } }, [
-        _vm._v("More Information:")
-      ]),
-      _vm._v(" "),
-      _c("textarea", {
-        staticClass:
-          "p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
-        attrs: {
-          name: "description",
-          id: "description",
-          autocomplete: "off",
-          rows: "4"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

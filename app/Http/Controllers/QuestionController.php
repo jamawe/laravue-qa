@@ -21,7 +21,10 @@ class QuestionController extends Controller
             'description' => '',
         ]);
 
-        $question = request()->user()->questions()->create($data);
+        $question = request()->user()->questions()->create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+        ]);
 
         return new QuestionResource($question);
     }

@@ -11,7 +11,7 @@
 
       <div class="my-2">
         <label for="description">More Information:</label>
-        <textarea name="description" class="p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text" id="description" autocomplete="off" rows="4"></textarea>
+        <textarea v-model="questionDescription" name="description" class="p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text" id="description" autocomplete="off" rows="4"></textarea>
       </div>
 
       <button @click="createQuestion()" class="bg-gray-200 h-8 px-4 py-1 rounded-full font-bold focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer">Submit Question</button>
@@ -46,15 +46,15 @@ export default {
       }, 300),
     },
 
-    // questionDescription: {
-    //   get() {
-    //   return this.$store.getters.questionDescription;
-    //   },
+    questionDescription: {
+      get() {
+      return this.$store.getters.questionDescription;
+      },
 
-    //   set(questionDescription) {
-    //     this.$store.commit('createDescription', questionDescription);
-    //   },
-    // },
+      set: _.debounce(function (questionDescription) {
+       this.$store.commit('createDescription', questionDescription);
+      }, 300),
+    },
 
   }
 }

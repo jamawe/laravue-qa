@@ -25,6 +25,7 @@ class QuestionFactory extends Factory
         return [
             'user_id' => User::factory(),
             'title' => $this->faker->sentence(),
+            'description' => $this->faker->text(),
         ];
     }
 }

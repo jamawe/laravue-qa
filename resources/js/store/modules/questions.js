@@ -6,7 +6,7 @@ const state = {
 
   questionTitle: '',
 
-  // questionDescription: '',
+  questionDescription: '',
   
 };
 
@@ -26,9 +26,9 @@ const getters = {
     return state.questionTitle;
   },
 
-  // questionDescription: state => {
-  //   return state.questionDescription;
-  // },
+  questionDescription: state => {
+    return state.questionDescription;
+  },
 
 };
 
@@ -54,12 +54,15 @@ const actions = {
     
     commit('setQuestionsStatus', 'loading');
 
-    axios.post('/api/questions', { title: state.questionTitle })
-    // axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription })
+    console.log('state.questionDescription: ', state.questionDescription);
+
+    // axios.post('/api/questions', { title: state.questionTitle })
+    axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription } )
       .then(res => {
+        console.log(res.data);
         commit('pushQuestion', res.data);
         commit('createTitle', '');
-        // commit('createDesciption', '');
+        commit('createDescription', '');
       })
       .catch(err => {
 
@@ -83,9 +86,9 @@ const mutations = {
     state.questionTitle = title;
   },
 
-  // createDescription(state, description) {
-  //   state.questionDescription = description;
-  // },
+  createDescription(state, description) {
+    state.questionDescription = description;
+  },
 
   pushQuestion(state, question) {
     state.questions.data.unshift(question);
