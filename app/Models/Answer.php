@@ -2,26 +2,18 @@
 
 namespace App\Models;
 
-use App\Scopes\ReverseScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
+class Answer extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    protected static function boot()
+    public function question()
     {
-        parent::boot();
-
-        static::addGlobalScope(new ReverseScope());
-    }
-
-    public function answers()
-    {
-        return $this->hasMany(Answer::class);
+        return $this->belongsTo(Question::class);
     }
 
     public function user()

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuestionAnswerController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserQuestionController;
 use App\Http\Controllers\AuthUserController;
@@ -25,6 +27,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResources([
         '/questions' => QuestionController::class,
+        '/questions/{question}/answer' => QuestionAnswerController::class,
         '/users' => UserController::class,
         '/users/{user}/questions' => UserQuestionController::class,
     ]);
