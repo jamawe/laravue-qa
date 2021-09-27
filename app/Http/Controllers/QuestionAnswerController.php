@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ValidationErrorException;
 use App\Http\Resources\AnswerCollection;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class QuestionAnswerController extends Controller
 {
     public function store(Question $question)
     {
         $data = request()->validate([
-            'content' => '',
+            'body' => 'required',
         ]);
 
         $question->answers()->create(array_merge($data, [

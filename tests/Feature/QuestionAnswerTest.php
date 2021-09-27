@@ -16,32 +16,20 @@ class AnswerTest extends TestCase
     /** @test */
     public function a_user_can_create_an_answer()
     {
-        $this->withoutExceptionHandling();
-
         $this->actingAs($user = User::factory()->create(), 'api');
         $question = Question::factory()->create(['id' => 123]);
 
         $response = $this->post('/api/questions/'.$question->id.'/answer', [
-            // 'data' => [
-            //     'type' => 'answers',
-            //     'attributes' => [
-                    'content' => 'Answer content',
-            //     ]
-            // ]
+            'body' => 'Answer body',
         ])
             ->assertStatus(200);
 
         $answer = Answer::first();
-
         $this->assertCount(1, Answer::all());
-
-        // dd($answer);
-
-        // $this->assertCount(1, Answer::all());
         
         $this->assertEquals($question->id, $answer->question_id);
         $this->assertEquals($user->id, $answer->user_id);
-        $this->assertEquals('Answer content', $answer->content);
+        $this->assertEquals('Answer body', $answer->body);
 
         $response
             ->assertJson([
@@ -59,14 +47,7 @@ class AnswerTest extends TestCase
                                     ]
                                 ]
                             ],
-                        // 'answered_question' => [
-                        //     'data' => [
-                        //         'attributes' => [
-                        //             'question_id' => $answer->question_id,
-                        //         ]
-                        //     ]
-                        // ],
-                            'content' => 'Answer content',
+                            'body' => 'Answer body',
                             'answered_at' => $answer->created_at->diffForHumans(),
                             ]
                         ],
@@ -79,66 +60,29 @@ class AnswerTest extends TestCase
                     'self' => url('/questions'),
                 ]
             ]);
-
     }
 
-    // /** @test */
-    // public function a_user_can_create_an_answer()
-    // {
-    //     $this->withoutExceptionHandling();
+    /** @test */
+    public function a_body_is_required_to_answer_a_question()
+    {
+        // $this->withoutExceptionHandling();
 
-    //     $this->actingAs($user = User::factory()->create(), 'api');
+        $this->actingAs($user = User::factory()->create(), 'api');
+        $question = Question::factory()->create(['id' => 124]);
 
-    //     $question = Question::factory()->create(['id' => 123]);
+        $response = $this->json('post', '/api/questions/'.$question->id.'/answer', [
+            'body' => '',
+        ])->assertStatus(422);
 
-    //     $response = $this->post('/api/answers', [
-    //         'data' => [
-    //             'type' => 'answers',
-    //             'attributes' => [
-    //                 'content' => 'Answer content',
-    //             ]
-    //         ]
-    //     ]);
 
-    //     $answer = Answer::first();
+        // dd($response->getContent());
+        // json_decodes formes an object out of json; true parameter formes an array
+        // Arrays are easier to assert on
+        $responseString = json_decode($response->getContent(), true);
 
-    //     $this->assertCount(1, Answer::all());
+        // dd($responseString);
+        $this->assertArrayHasKey('body', $responseString['errors']);
+    }
 
-    //     // dd($answer);
 
-    //     // $this->assertCount(1, Answer::all());
-        
-    //     // $this->assertEquals($question->id, $answer->question_id);
-    //     $this->assertEquals($user->id, $answer->user_id);
-    //     $this->assertEquals('Answer content', $answer->content);
-
-    //     $response->assertStatus(201)
-    //         ->assertJson([
-    //             'data' => [
-    //                 'type' => 'answers',
-    //                 'answer_id' => $answer->id,
-    //                 'attributes' => [
-    //                     'answered_by' => [
-    //                         'data' => [
-    //                             'attributes' => [
-    //                                 'name' => $user->name,
-    //                             ]
-    //                         ]
-    //                     ],
-    //                     'answered_question' => [
-    //                         'data' => [
-    //                             'attributes' => [
-    //                                 'question_id' => $answer->question_id,
-    //                             ]
-    //                         ]
-    //                     ],
-    //                     'content' => 'Answer content',
-    //                 ]
-    //             ],
-    //             'links' => [
-    //                 'self' => url('/answers/'.$answer->id),
-    //             ]
-    //         ]);
-
-    // }
 }

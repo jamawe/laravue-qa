@@ -37,5 +37,9 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (ValidationException $e, $request) {
+            throw new ValidationErrorException(json_encode($e->errors()));
+        });
     }
 }
