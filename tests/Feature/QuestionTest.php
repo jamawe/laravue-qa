@@ -92,4 +92,20 @@ class QuestionTest extends TestCase
 
     }
 
+    /** @test */
+    public function a_title_is_required_to_post_a_question()
+    {
+        
+        $this->actingAs($user = User::factory()->create(), 'api');
+
+        $response = $this->json('post', '/api/questions', [
+            'title' => '',
+        ])->assertStatus(422);
+
+        // json_decodes formes an object out of json; true parameter formes an array
+        // Arrays are easier to assert on
+        $responseString = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('title', $responseString['errors']);
+    }
+
 }

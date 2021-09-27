@@ -17,7 +17,7 @@ class QuestionController extends Controller
     public function store()
     {
         $data = request()->validate([
-            'title' => '',
+            'title' => 'required',
             'description' => '',
         ]);
 

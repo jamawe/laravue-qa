@@ -74,13 +74,9 @@ class AnswerTest extends TestCase
             'body' => '',
         ])->assertStatus(422);
 
-
-        // dd($response->getContent());
         // json_decodes formes an object out of json; true parameter formes an array
         // Arrays are easier to assert on
         $responseString = json_decode($response->getContent(), true);
-
-        // dd($responseString);
         $this->assertArrayHasKey('body', $responseString['errors']);
     }
 
