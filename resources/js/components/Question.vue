@@ -7,9 +7,11 @@
       </div>
 
       <div class="flex flex-col w-5/6 mx-2 py-4">
-        <div class="flex justify-start text-blue-700 hover:text-blue-800 text-xl">
-          {{ question.data.attributes.title }}
-        </div>
+        <router-link :to="`/questions/${question.data.question_id}`">
+          <div class="flex justify-start text-blue-700 hover:text-blue-800 text-xl">
+            {{ question.data.attributes.title }}
+          </div>
+        </router-link>
 
         <div class="flex justify-end m-2">
           <!-- <div class="flex justify-between items-center">

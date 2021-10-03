@@ -108,4 +108,33 @@ class QuestionTest extends TestCase
         $this->assertArrayHasKey('title', $responseString['errors']);
     }
 
+    /** @test */
+    public function a_user_can_view_a_single_question()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->actingAs($user = User::factory()->create(), 'api');
+
+        $question = Question::factory()->create();
+
+        // dd($question);
+
+        $response = $this->get('/api/questions/'.$question->id);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'type' => 'questions',
+                    'question_id' => $question->id,
+                    'attributes' => [
+                        'title' => $question->title,
+                        'description' => $question->description,
+                    ]
+                ],
+                'links' => [
+                    'self' => url('/questions/'.$question->id),
+                ]
+            ]);
+    }
+
 }

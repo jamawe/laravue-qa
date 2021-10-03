@@ -21,6 +21,7 @@ class Question extends JsonResource
                 'question_id' => $this->id,
                 'attributes' => [
                     'asked_by' => new UserResource($this->user),
+                    'answers' => new AnswerCollection($this->answers),
                     'title' => $this->title,
                     'description' => $this->description,
                     'posted_at' => $this->created_at->diffForHumans(),

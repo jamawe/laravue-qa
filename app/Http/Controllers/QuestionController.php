@@ -28,4 +28,9 @@ class QuestionController extends Controller
 
         return new QuestionResource($question);
     }
+
+    public function show(Question $question)
+    {
+        return new QuestionResource($question);
+    }
 }

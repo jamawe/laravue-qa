@@ -50,6 +50,10 @@ const actions = {
       });
   },
 
+  fetchQuestion({commit, dispatch}) {
+    
+  },
+
   createQuestion({commit, state}) {
     
     commit('setQuestionsStatus', 'loading');
