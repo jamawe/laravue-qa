@@ -2010,6 +2010,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Question',
   props: ['question']
@@ -2173,6 +2182,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2255,8 +2271,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'QuestionShow'
+  name: 'QuestionShow',
+  mounted: function mounted() {
+    this.$store.dispatch('fetchQuestion', this.$route.params.questionId);
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
+    question: 'question'
+  }))
 });
 
 /***/ }),
@@ -2545,7 +2595,8 @@ var state = {
   questions: null,
   questionStatus: null,
   questionTitle: '',
-  questionDescription: ''
+  questionDescription: '',
+  question: ''
 };
 var getters = {
   questions: function questions(state) {
@@ -2561,6 +2612,9 @@ var getters = {
   },
   questionDescription: function questionDescription(state) {
     return state.questionDescription;
+  },
+  question: function question(state) {
+    return state.question;
   }
 };
 var actions = {
@@ -2576,9 +2630,15 @@ var actions = {
       commit('setQuestionsStatus', 'error');
     });
   },
-  fetchQuestion: function fetchQuestion(_ref2) {
+  fetchQuestion: function fetchQuestion(_ref2, questionId) {
     var commit = _ref2.commit,
         dispatch = _ref2.dispatch;
+    axios.get('/api/questions/' + questionId).then(function (res) {
+      commit('setQuestion', res.data);
+      console.log('res.data', res.data);
+    })["catch"](function (err) {
+      console.log('Unable to fetch question.');
+    });
   },
   createQuestion: function createQuestion(_ref3) {
     var commit = _ref3.commit,
@@ -2612,6 +2672,9 @@ var mutations = {
   },
   pushQuestion: function pushQuestion(state, question) {
     state.questions.data.unshift(question);
+  },
+  setQuestion: function setQuestion(state, question) {
+    state.question = question;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -38925,72 +38988,104 @@ var render = function() {
     "div",
     { staticClass: "bg-white rounded shadow w-2/3 mt-6 overflow-hidden" },
     [
-      _c("div", { staticClass: "flex justify-around items-start" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex flex-col w-5/6 mx-2 py-4" },
-          [
-            _c(
-              "router-link",
-              { attrs: { to: "/questions/" + _vm.question.data.question_id } },
-              [
+      _c(
+        "div",
+        { staticClass: "flex justify-around items-start" },
+        [
+          _vm.question.data.attributes.answers.answer_count === 1
+            ? [
                 _c(
                   "div",
                   {
                     staticClass:
-                      "flex justify-start text-blue-700 hover:text-blue-800 text-xl"
+                      "flex flex-col w-1/6 mx-2 py-4 items-center text-center"
                   },
                   [
-                    _vm._v(
-                      "\n          " +
-                        _vm._s(_vm.question.data.attributes.title) +
-                        "\n        "
-                    )
+                    _c("p", { staticClass: "text-xl" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.question.data.attributes.answers.answer_count
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-xs" }, [_vm._v("answer")])
                   ]
                 )
               ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex justify-end m-2" }, [
-              _c("div", { staticClass: "text-xs" }, [
-                _c("p", [
-                  _vm._v(
-                    "asked by " +
-                      _vm._s(
-                        _vm.question.data.attributes.asked_by.data.attributes
-                          .name
-                      ) +
-                      " " +
-                      _vm._s(_vm.question.data.attributes.posted_at)
+            : [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "flex flex-col w-1/6 mx-2 py-4 items-center text-center"
+                  },
+                  [
+                    _c("p", { staticClass: "text-xl" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.question.data.attributes.answers.answer_count
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-xs" }, [_vm._v("answers")])
+                  ]
+                )
+              ],
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "flex flex-col w-5/6 mx-2 py-4" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: "/questions/" + _vm.question.data.question_id }
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "flex justify-start text-blue-700 hover:text-blue-800 text-xl"
+                    },
+                    [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.question.data.attributes.title) +
+                          "\n        "
+                      )
+                    ]
                   )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex justify-end m-2" }, [
+                _c("div", { staticClass: "text-xs" }, [
+                  _c("p", [
+                    _vm._v(
+                      "asked by " +
+                        _vm._s(
+                          _vm.question.data.attributes.asked_by.data.attributes
+                            .name
+                        ) +
+                        " " +
+                        _vm._s(_vm.question.data.attributes.posted_at)
+                    )
+                  ])
                 ])
               ])
-            ])
-          ],
-          1
-        )
-      ])
+            ],
+            1
+          )
+        ],
+        2
+      )
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex flex-col w-1/6 mx-2 py-4 items-center text-center" },
-      [
-        _c("p", { staticClass: "text-xl" }, [_vm._v("0")]),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-xs" }, [_vm._v("answers")])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39209,113 +39304,177 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "flex flex-col items-start p-4" }, [
+    _c("div", { staticClass: "w-full p-4" }, [
+      _c("h1", { staticClass: "font-bold text-2xl" }, [
+        _vm._v(_vm._s(_vm.question.data.attributes.title))
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex mt-2" }, [
+        _c("div", { staticClass: "mr-4" }, [
+          _c("p", { staticClass: "text-xs" }, [
+            _vm._v(_vm._s(_vm.question.data.attributes.posted_at))
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1)
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "w-full my-4" }, [
+        _c("p", [
+          _vm._v(
+            "\n          " +
+              _vm._s(_vm.question.data.attributes.description) +
+              "\n        "
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex justify-end" }, [
+        _c("div", { staticClass: "rounded bg-white p-1" }, [
+          _c("p", { staticClass: "text-xs" }, [
+            _vm._v(
+              "\n            asked " +
+                _vm._s(_vm.question.data.attributes.posted_at) +
+                "\n          "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex justify-start mt-1" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", [
+              _c("p", { staticClass: "text-xs" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(
+                      _vm.question.data.attributes.asked_by.data.attributes.name
+                    ) +
+                    "\n              "
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "w-full p-4" },
+      [
+        _c("div", [
+          _vm.question.data.attributes.answers.answer_count === 1
+            ? _c("h2", { staticClass: "text-lg font-semibold" }, [
+                _vm._v(
+                  _vm._s(_vm.question.data.attributes.answers.answer_count) +
+                    " Answer"
+                )
+              ])
+            : _vm.question.data.attributes.answers.answer_count > 1
+            ? _c("h2", { staticClass: "text-lg font-semibold" }, [
+                _vm._v(
+                  _vm._s(_vm.question.data.attributes.answers.answer_count) +
+                    " Answers"
+                )
+              ])
+            : _c("h2", { staticClass: "text-lg font-semibold" }, [
+                _vm._v("This question has no answers yet. Write one below!")
+              ])
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.question.data.attributes.answers.data, function(answer, i) {
+          return _c("div", { key: i, staticClass: "w-full my-4" }, [
+            _c("p", [
+              _vm._v(
+                "\n          " +
+                  _vm._s(answer.data.attributes.body) +
+                  "\n        "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex justify-end mt-4" }, [
+              _c("div", { staticClass: "rounded bg-white p-1" }, [
+                _c("p", { staticClass: "text-xs" }, [
+                  _vm._v(
+                    "\n              answered " +
+                      _vm._s(answer.data.attributes.answered_at) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex justify-start mt-1" }, [
+                  _vm._m(3, true),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("p", { staticClass: "text-xs" }, [
+                      _vm._v(
+                        "\n                  " +
+                          _vm._s(
+                            answer.data.attributes.answered_by.data.attributes
+                              .name
+                          ) +
+                          "\n                "
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        })
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex flex-col items-start p-4" }, [
-      _c("div", { staticClass: "w-full p-4" }, [
-        _c("h1", { staticClass: "font-bold text-2xl" }, [
-          _vm._v("This is the question title")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex mt-2" }, [
-          _c("div", { staticClass: "mr-4" }, [
-            _c("p", { staticClass: "text-xs" }, [
-              _vm._v("Asked 8 years, 1 month ago")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mr-4" }, [
-            _c("p", { staticClass: "text-xs" }, [_vm._v("Active 9 months ago")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mr-4" }, [
-            _c("p", { staticClass: "text-xs" }, [_vm._v("Viewed 242k times")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-full my-4" }, [
-          _c("p", [
-            _vm._v(
-              "\n          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor exercitationem laborum sit earum recusandae. Beatae illo, excepturi iure mollitia quidem ullam aliquid. Saepe, adipisci suscipit dicta velit numquam nihil facere.\n        "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex justify-end" }, [
-          _c("div", { staticClass: "rounded bg-white p-1" }, [
-            _c("p", { staticClass: "text-xs" }, [
-              _vm._v("\n            asked Aug 1 '13 at 9:57\n          ")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex justify-start mt-1" }, [
-              _c("a", { staticClass: "h-full mr-1" }, [
-                _c("img", {
-                  staticClass: "w-8 h-8 object-cover rounded-full",
-                  attrs: {
-                    src:
-                      "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
-                    alt: "Profile Image"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c("p", { staticClass: "text-xs" }, [
-                  _vm._v("\n                User Name\n              ")
-                ])
-              ])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-full p-4" }, [
-        _c("div", [
-          _c("h2", { staticClass: "text-lg font-semibold" }, [
-            _vm._v("1 Answer")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-full my-4" }, [
-          _c("p", [
-            _vm._v(
-              "\n          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor exercitationem laborum sit earum recusandae. Beatae illo, excepturi iure mollitia quidem ullam aliquid. Saepe, adipisci suscipit dicta velit numquam nihil facere.\n        "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex justify-end" }, [
-          _c("div", { staticClass: "rounded bg-white p-1" }, [
-            _c("p", { staticClass: "text-xs" }, [
-              _vm._v("\n            asked Aug 1 '13 at 9:57\n          ")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex justify-start mt-1" }, [
-              _c("a", { staticClass: "h-full mr-1" }, [
-                _c("img", {
-                  staticClass: "w-8 h-8 object-cover rounded-full",
-                  attrs: {
-                    src:
-                      "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
-                    alt: "Profile Image"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c("p", { staticClass: "text-xs" }, [
-                  _vm._v("\n                User Name\n              ")
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "mr-4" }, [
+      _c("p", { staticClass: "text-xs" }, [_vm._v("Active 9 months ago")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mr-4" }, [
+      _c("p", { staticClass: "text-xs" }, [_vm._v("Viewed 242k times")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "h-full mr-1" }, [
+      _c("img", {
+        staticClass: "w-8 h-8 object-cover rounded-full",
+        attrs: {
+          src:
+            "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+          alt: "Profile Image"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "h-full mr-1" }, [
+      _c("img", {
+        staticClass: "w-8 h-8 object-cover rounded-full",
+        attrs: {
+          src:
+            "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+          alt: "Profile Image"
+        }
+      })
     ])
   }
 ]

@@ -1,10 +1,19 @@
 <template>
   <div class="bg-white rounded shadow w-2/3 mt-6 overflow-hidden">
     <div class="flex justify-around items-start">
-      <div class="flex flex-col w-1/6 mx-2 py-4 items-center text-center">
-        <p class="text-xl">0</p>
-        <p class="text-xs">answers</p>
-      </div>
+      <template v-if="question.data.attributes.answers.answer_count === 1">
+        <div class="flex flex-col w-1/6 mx-2 py-4 items-center text-center">
+          <p class="text-xl">{{ question.data.attributes.answers.answer_count }}</p>
+          <p class="text-xs">answer</p>
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="flex flex-col w-1/6 mx-2 py-4 items-center text-center">
+          <p class="text-xl">{{ question.data.attributes.answers.answer_count }}</p>
+          <p class="text-xs">answers</p>
+        </div>
+      </template>
 
       <div class="flex flex-col w-5/6 mx-2 py-4">
         <router-link :to="`/questions/${question.data.question_id}`">

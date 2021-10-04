@@ -7,6 +7,8 @@ const state = {
   questionTitle: '',
 
   questionDescription: '',
+
+  question: '',
   
 };
 
@@ -30,6 +32,10 @@ const getters = {
     return state.questionDescription;
   },
 
+  question: state => {
+    return state.question;
+  }
+
 };
 
 const actions = {
@@ -50,8 +56,15 @@ const actions = {
       });
   },
 
-  fetchQuestion({commit, dispatch}) {
-    
+  fetchQuestion({commit, dispatch}, questionId) {
+    axios.get('/api/questions/' + questionId)
+      .then(res => {
+        commit('setQuestion', res.data);
+        console.log('res.data', res.data);
+      })
+      .catch(err => {
+        console.log('Unable to fetch question.');
+      })
   },
 
   createQuestion({commit, state}) {
@@ -96,6 +109,10 @@ const mutations = {
 
   pushQuestion(state, question) {
     state.questions.data.unshift(question);
+  },
+
+  setQuestion(state, question) {
+    state.question = question;
   }
 };
 
