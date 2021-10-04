@@ -23,25 +23,11 @@
           </p>
         </div>
 
-        <div class="flex justify-end">
-          <div class="rounded bg-white p-1">
-            <p class="text-xs">
-              asked {{ question.data.attributes.posted_at }}
-            </p>
-
-            <div class="flex justify-start mt-1">
-              <a class="h-full mr-1">
-                <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="Profile Image"  class="w-8 h-8 object-cover rounded-full">
-              </a>
-
-              <div>
-                <p class="text-xs">
-                  {{ question.data.attributes.asked_by.data.attributes.name }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <UserBox 
+          :user-date="question.data.attributes.posted_at"
+          :user-name="question.data.attributes.asked_by.data.attributes.name"
+        />
+        
       </div>
 
       <div class="w-full p-4">
@@ -56,51 +42,16 @@
             v-for="(answer, i) in question.data.attributes.answers.data"
             :key="i"
             class="w-full my-4">
-          <p>
+          <p class="mb-4">
             {{ answer.data.attributes.body }}
           </p>
 
-          <div class="flex justify-end mt-4">
-            <div class="rounded bg-white p-1">
-              <p class="text-xs">
-                answered {{ answer.data.attributes.answered_at }}
-              </p>
-
-              <div class="flex justify-start mt-1">
-                <a class="h-full mr-1">
-                  <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="Profile Image"  class="w-8 h-8 object-cover rounded-full">
-                </a>
-
-                <div>
-                  <p class="text-xs">
-                    {{ answer.data.attributes.answered_by.data.attributes.name }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <UserBox 
+            :user-date="answer.data.attributes.answered_at"
+            :user-name="answer.data.attributes.answered_by.data.attributes.name"
+          />
 
         </div>
-
-        <!-- <div class="flex justify-end">
-          <div class="rounded bg-white p-1">
-            <p class="text-xs">
-              answered Aug 1 '13 at 9:57
-            </p>
-
-            <div class="flex justify-start mt-1">
-              <a class="h-full mr-1">
-                <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="Profile Image"  class="w-8 h-8 object-cover rounded-full">
-              </a>
-
-              <div>
-                <p class="text-xs">
-                  User Name
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
       </div>
 
@@ -108,9 +59,15 @@
 </template>
 
 <script>
+import UserBox from '../../components/UserBox.vue';
 import { mapGetters } from 'vuex';
+
 export default {
   name: 'QuestionShow',
+
+  components: {
+    UserBox,
+  },
 
   mounted() {
     this.$store.dispatch('fetchQuestion', this.$route.params.questionId);

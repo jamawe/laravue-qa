@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Question from '../../components/Question.vue'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Index',
