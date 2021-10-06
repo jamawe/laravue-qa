@@ -6,15 +6,15 @@
     <!-- <form action="post"> -->
       <div class="my-2">
         <label for="title">Question:</label>
-        <input v-model="questionTitle" type="text" class="p-2 w-full bg-gray-200 h-8 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text" name="title" id="title" autocomplete="off"/>
+        <input v-model="questionTitle" type="text" class="p-2 w-full bg-gray-200 h-8 rounded border-gray-300 focus:border-gray-400 focus:shadow-outline focus:ring-1 ring-gray-500 focus:ring-gray-500 focus:ring-opacity-50 cursor-text" name="title" id="title" autocomplete="off"/>
       </div>
 
       <div class="my-2">
         <label for="description">More Information:</label>
-        <textarea v-model="questionDescription" name="description" class="p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text" id="description" autocomplete="off" rows="4"></textarea>
+        <textarea v-model="questionDescription" name="description" class="p-2 w-full bg-gray-200 rounded border-gray-300 focus:border-gray-400 focus:outline-none focus:shadow-outline focus:ring-1 ring-gray-500 focus:ring-gray-500 focus:ring-opacity-50 cursor-text" id="description" autocomplete="off" rows="4"></textarea>
       </div>
 
-      <button @click="createQuestion()" class="bg-gray-200 h-8 px-4 py-1 rounded-full font-bold focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer">Submit Question</button>
+      <button @click="createQuestion()" class="bg-gray-200 h-8 px-4 py-1 rounded-full font-bold border-gray-300 hover:border-gray-400 focus:outline-none focus:shadow-outline focus:ring-1 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer">Submit Question</button>
     <!-- </form> -->
   </div>
   </div>

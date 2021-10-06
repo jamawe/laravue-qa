@@ -2235,7 +2235,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_UserBox_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/UserBox.vue */ "./resources/js/components/UserBox.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2302,6 +2304,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2312,9 +2324,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     this.$store.dispatch('fetchQuestion', this.$route.params.questionId);
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({
-    question: 'question'
-  }))
+  data: function data() {
+    return {// answerBody: '', 2RKjM6@6 R?qJ4eDhigTb
+    };
+  },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+    question: 'question',
+    answers: 'answers',
+    answerCount: 'answerCount'
+  })), {}, {
+    answerBody: {
+      get: function get() {
+        return this.$store.getters.answerBody;
+      },
+      set: lodash__WEBPACK_IMPORTED_MODULE_1___default().debounce(function (answerBody) {
+        this.$store.commit('createAnswerBody', answerBody);
+      }, 300)
+    }
+  })
 });
 
 /***/ }),
@@ -2567,24 +2594,83 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/user */ "./resources/js/store/modules/user.js");
 /* harmony import */ var _modules_title__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/title */ "./resources/js/store/modules/title.js");
 /* harmony import */ var _modules_questions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/questions */ "./resources/js/store/modules/questions.js");
+/* harmony import */ var _modules_answers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/answers */ "./resources/js/store/modules/answers.js");
+/* harmony import */ var _modules_answers__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_modules_answers__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vuex__WEBPACK_IMPORTED_MODULE_4__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_4__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_4__.default.use(vuex__WEBPACK_IMPORTED_MODULE_5__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_5__.default.Store({
   modules: {
     User: _modules_user__WEBPACK_IMPORTED_MODULE_0__.default,
     Title: _modules_title__WEBPACK_IMPORTED_MODULE_1__.default,
-    Questions: _modules_questions__WEBPACK_IMPORTED_MODULE_2__.default
+    Questions: _modules_questions__WEBPACK_IMPORTED_MODULE_2__.default,
+    Answers: (_modules_answers__WEBPACK_IMPORTED_MODULE_3___default())
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/answers.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/answers.js ***!
+  \***********************************************/
+/***/ (() => {
+
+// const state = {
+//   answerBody: '',
+// };
+// const getters = {
+//   answerBody: state => {
+//     return state.answerBody;
+//   }
+// };
+// const actions = {
+//   createAnswer({commit, state}, data) {
+//     console.log('data.questionId', data.questionId);
+//     console.log('data.answerBody', data.answerBody);
+//     axios.post('/api/questions/'+data.questionId+'/answer', { body: state.answerBody })
+//     .then(res => {
+//       // commit('pushAnswers', { answers: res.data })
+//       console.log('ANSWER', res.data);
+//     })
+//     .catch(err => {
+//       console.log('Something happened...');
+//     })
+//   },
+//   // createQuestion({commit, state}) {
+//   //   commit('setQuestionsStatus', 'loading');
+//   //   console.log('state.questionDescription: ', state.questionDescription);
+//   //   // axios.post('/api/questions', { title: state.questionTitle })
+//   //   axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription } )
+//   //     .then(res => {
+//   //       console.log(res.data);
+//   //       commit('pushQuestion', res.data);
+//   //       commit('createTitle', '');
+//   //       commit('createDescription', '');
+//   //     })
+//   //     .catch(err => {
+//   //     });
+//   // }
+// };
+// const mutations = {
+//   createAnswerBody(state, answer) {
+//     state.answerBody = answer;
+//   },
+//   pushAnswer(state, answer) {
+//   }
+// };
+// export default {
+//   state, getters, actions, mutations
+// }
 
 /***/ }),
 
@@ -2604,7 +2690,10 @@ var state = {
   questionStatus: null,
   questionTitle: '',
   questionDescription: '',
-  question: ''
+  question: '',
+  answers: null,
+  answerCount: null,
+  answerBody: ''
 };
 var getters = {
   questions: function questions(state) {
@@ -2623,6 +2712,15 @@ var getters = {
   },
   question: function question(state) {
     return state.question;
+  },
+  answers: function answers(state) {
+    return state.answers;
+  },
+  answerCount: function answerCount(state) {
+    return state.answerCount;
+  },
+  answerBody: function answerBody(state) {
+    return state.answerBody;
   }
 };
 var actions = {
@@ -2643,7 +2741,9 @@ var actions = {
         dispatch = _ref2.dispatch;
     axios.get('/api/questions/' + questionId).then(function (res) {
       commit('setQuestion', res.data);
-      console.log('res.data', res.data);
+      commit('setAnswers', res.data.data.attributes.answers.data);
+      console.log('setAnswerCount', res.data.data.attributes.answers.answer_count);
+      commit('setAnswerCount', res.data.data.attributes.answers.answer_count);
     })["catch"](function (err) {
       console.log('Unable to fetch question.');
     });
@@ -2652,8 +2752,6 @@ var actions = {
     var commit = _ref3.commit,
         state = _ref3.state;
     commit('setQuestionsStatus', 'loading');
-    console.log('state.questionDescription: ', state.questionDescription); // axios.post('/api/questions', { title: state.questionTitle })
-
     axios.post('/api/questions', {
       title: state.questionTitle,
       description: state.questionDescription
@@ -2662,7 +2760,22 @@ var actions = {
       commit('pushQuestion', res.data);
       commit('createTitle', '');
       commit('createDescription', '');
-    })["catch"](function (err) {});
+    })["catch"](function (err) {
+      console.log('Unable to create question.');
+    });
+  },
+  createAnswer: function createAnswer(_ref4, data) {
+    var commit = _ref4.commit,
+        state = _ref4.state;
+    axios.post('/api/questions/' + data.questionId + '/answer', {
+      body: state.answerBody
+    }).then(function (res) {
+      commit('setAnswers', res.data.data); // console.log('setAnswerCount', res.data.answer_count);
+
+      commit('setAnswerCount', res.data.answer_count);
+    })["catch"](function (err) {
+      console.log('Unable to create answer.');
+    });
   }
 };
 var mutations = {
@@ -2683,6 +2796,15 @@ var mutations = {
   },
   setQuestion: function setQuestion(state, question) {
     state.question = question;
+  },
+  setAnswers: function setAnswers(state, answers) {
+    state.answers = answers;
+  },
+  setAnswerCount: function setAnswerCount(state, count) {
+    state.answerCount = count;
+  },
+  createAnswerBody: function createAnswerBody(state, answer) {
+    state.answerBody = answer;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -38920,7 +39042,7 @@ var render = function() {
               _vm._v(" "),
               _c("input", {
                 staticClass:
-                  "w-56 pl-8 bg-gray-200 h-8 rounded-full focus:outline-none focus:shadow-outline text-sm",
+                  "w-56 pl-8 bg-gray-200 border-gray-300 focus:border-gray-400 focus:shadow-outline focus:ring-1 ring-gray-500 focus:ring-gray-500 focus:ring-opacity-50 cursor-text h-8 rounded-full focus:outline-none focus:shadow-outline text-sm",
                 attrs: {
                   type: "text",
                   name: "search",
@@ -39116,7 +39238,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "flex flex-col w-5/6 mx-2 py-4" },
+            { staticClass: "flex flex-col w-5/6 mx-2 pt-4 pb-2" },
             [
               _c(
                 "router-link",
@@ -39303,7 +39425,7 @@ var render = function() {
             }
           ],
           staticClass:
-            "p-2 w-full bg-gray-200 h-8 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
+            "p-2 w-full bg-gray-200 h-8 rounded border-gray-300 focus:border-gray-400 focus:shadow-outline focus:ring-1 ring-gray-500 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
           attrs: {
             type: "text",
             name: "title",
@@ -39337,7 +39459,7 @@ var render = function() {
             }
           ],
           staticClass:
-            "p-2 w-full bg-gray-200 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
+            "p-2 w-full bg-gray-200 rounded border-gray-300 focus:border-gray-400 focus:outline-none focus:shadow-outline focus:ring-1 ring-gray-500 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
           attrs: {
             name: "description",
             id: "description",
@@ -39360,7 +39482,7 @@ var render = function() {
         "button",
         {
           staticClass:
-            "bg-gray-200 h-8 px-4 py-1 rounded-full font-bold focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer",
+            "bg-gray-200 h-8 px-4 py-1 rounded-full font-bold border-gray-300 hover:border-gray-400 focus:outline-none focus:shadow-outline focus:ring-1 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer",
           on: {
             click: function($event) {
               return _vm.createQuestion()
@@ -39481,26 +39603,20 @@ var render = function() {
       { staticClass: "w-full p-4" },
       [
         _c("div", [
-          _vm.question.data.attributes.answers.answer_count === 1
+          _vm.answerCount === 1
             ? _c("h2", { staticClass: "text-lg font-semibold" }, [
-                _vm._v(
-                  _vm._s(_vm.question.data.attributes.answers.answer_count) +
-                    " Answer"
-                )
+                _vm._v(_vm._s(_vm.answerCount) + " Answer")
               ])
-            : _vm.question.data.attributes.answers.answer_count > 1
+            : _vm.answerCount > 1
             ? _c("h2", { staticClass: "text-lg font-semibold" }, [
-                _vm._v(
-                  _vm._s(_vm.question.data.attributes.answers.answer_count) +
-                    " Answers"
-                )
+                _vm._v(_vm._s(_vm.answerCount) + " Answers")
               ])
             : _c("h2", { staticClass: "text-lg font-semibold" }, [
                 _vm._v("This question has no answers yet. Write one below!")
               ])
         ]),
         _vm._v(" "),
-        _vm._l(_vm.question.data.attributes.answers.data, function(answer, i) {
+        _vm._l(_vm.answers, function(answer, i) {
           return _c(
             "div",
             { key: i, staticClass: "w-full my-4" },
@@ -39526,7 +39642,53 @@ var render = function() {
         })
       ],
       2
-    )
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "w-full p-4" }, [
+      _c("div", { staticClass: "mb-2" }, [
+        _c("h2", { staticClass: "mb-3 text-lg" }, [_vm._v("Your Answer")]),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.answerBody,
+              expression: "answerBody"
+            }
+          ],
+          staticClass:
+            "w-full bg-white rounded border-gray-300 focus:border-gray-400 focus:outline-none focus:shadow-outline focus:ring-1 ring-gray-500 focus:ring-gray-500 focus:ring-opacity-50 cursor-text",
+          attrs: { name: "answer", id: "answer", cols: "30", rows: "4" },
+          domProps: { value: _vm.answerBody },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.answerBody = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "bg-white h-8 px-4 py-1 rounded-full border-gray-300 hover:border-gray-400 focus:outline-none focus:shadow-outline focus:ring-1 focus:ring-gray-500 focus:ring-opacity-50 cursor-pointer",
+          on: {
+            click: function($event) {
+              _vm.$store.dispatch("createAnswer", {
+                questionId: _vm.question.data.question_id
+              })
+              _vm.answerBody = ""
+            }
+          }
+        },
+        [_vm._v("Submit Answer")]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
